@@ -1,5 +1,6 @@
-/target
-!/target/generated # for cljx
+/target 
+#for cljx:
+!/target/generated/**/*
 /classes
 /checkouts
 pom.xml
@@ -10,8 +11,6 @@ pom.xml.asc
 /.nrepl-port
 .repl/
 out/
-*.clj#
 resources/public/js/gen/
 resources/public/js/gen-dev/
-resources/public/styles/
 resources/public/js/react/
