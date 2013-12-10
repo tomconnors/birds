@@ -26,11 +26,7 @@
    [:a.main-title {:href "/"} "birds"]
    [:div#header-right
     (if user
-      [:a#main-user-btn.btn.btn-default {:href (str "/user/" (:id user))}
-           [:img.user-btn__avatar {:src (:img user)}]
-           ;; todo: this should be wrapped in a conditional and only shown
-           ;; when not on mobile.
-           [:span (:name user)]]
+      [:span (:name user)]
       [:button#main-user-btn.btn.btn-default.login-btn
        {:on-click show-nav-with-login}
        "Log In"])]])

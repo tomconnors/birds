@@ -34,4 +34,3 @@
   (let [membership (db/read-one :team-member {:team-id team-id
                                                   :user-id user-id})]
     (if membership (:access-level membership))))
-

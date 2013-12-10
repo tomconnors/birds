@@ -8,10 +8,13 @@ This app is a tool for birdwatchers and teams of birdwatchers to keep track of t
 
 ## To run
 * compile the shared code with `lein cljx once`
-* compile the clojurescript with `lein cljsbuild once`
+* compile the clojurescript with `lein cljsbuild once` - you'll see a really magnificent number of warnings due to the sloppy usage of history.js and advanced compilation. Don't worry about that.
 * start a repl with `lein repl` 
 * evaluate `(reset)`
+* populate the dev data: `(require '[birds.models.dev-data :as dev-data]) (dev-data/add-fixture-data)`
 * Go to localhost:8000 in your browser
+* You can sign up as a new user or log in as jill, phil, or bill, each with the password 123456
+* Click around.
 
 ## Read more
 
@@ -19,6 +22,8 @@ This blog post talks about the concepts implemented in this code base:
 [How I Structured a Clojure(+Script) Web App](http://tomconnors.github.io/blog/2013/12/03/how-i-structured-a-clojure-plus-script-web-app/)
 
 ## Known Problems
+
+There's bug I haven't worked out where if you sign up then create a team, you're not listed as the owner of the team. Probably something trivial. Workaround by signing up, then out, then back in, and proceeding as normal.
 
 This is either a problem with lein, cljx, or my usage of one of those two things. When I clean out all generated code, then run `lein cljx auto`, the task fails because my .clj code can't compile. Because it depends on .cljx code. That hasn't been compiled to .clj code yet. ([like this](http://en.wikipedia.org/wiki/Ouroboros).) A simple fix to this nuisance is to comment out all `source-paths` properties in the project.clj, then run `lein cljx once`, then uncomment those properties, then resume a normal workflow. Because that's such a pain in the ass, I've committed the generated code under target/generated to this repo - hopefully the first time you attempt to run a repl or otherwise compile this project you won't have to deal with this.
 

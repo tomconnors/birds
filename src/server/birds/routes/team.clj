@@ -25,7 +25,7 @@
 (defn add-team-member [team-id user-id user]
   (when (= :owner (teams/user-membership team-id (:id user)))
     (teams/add-team-member! team-id user-id :member)
-    (data team-id user)))
+    (str (data team-id user))))
 
 (defn remove-team-member [team-id user-id user]
   (when (= :owner (teams/user-membership team-id (:id user)))
@@ -33,6 +33,7 @@
     {:removed true}))
 
 (defn add-team [team-name user]
+  (log user)
   (when user
     (let [id (shared-util/unique-id)]
       (teams/insert-team! {:name team-name

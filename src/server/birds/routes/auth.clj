@@ -13,6 +13,7 @@
             [birds.routes.util :refer [page-data]]
             [birds.routes.home :as home]
             [birds.util :refer [log]]
+            [birds.shared.util :refer [unique-id]]
             [compojure.core :refer [GET POST ANY]]
             [birds.shared.models.users
              :refer [valid-username? valid-password?]]))
@@ -21,7 +22,7 @@
   "Return the data for a route, based on the :uri of the req.
    Uses a verbose version of what compojure does (except it's all
    on the server, no redirects or other such foolishness) -
-   ideally the compojure routes defined in com.web-page could be
+   ideally the compojure routes defined in birds.web-page could be
    reused, but I don't know how yet."
   [req user] 
   (or
@@ -56,14 +57,14 @@
 (defn signup-handler
   "Handle a user attempting to sign up."
   [{{:keys [username password confirm] :as params} :params :as req}]
-  (if (valid-username? username)
-    (if (users/free-username? username)
-      (if (= password confirm)
-        (if (valid-password? password)
-          (let [user (users/insert-user!
-                      {:name username
-                       :password (creds/hash-bcrypt password)})]            
-            (merge-auth req user)))))))
+  (if (valid-username? username)    
+    (if (= password confirm)
+      (if (valid-password? password)
+        (let [user {:name username
+                    :password (creds/hash-bcrypt password)
+                    :id (unique-id)}]
+          (users/insert-user! user)
+          (merge-auth req user))))))
 
 (defn logout-handler
   "Handle a user attempting to log out."
@@ -74,6 +75,7 @@
   "Handle a user attempting to sign in."
   [{{:keys [username password] :as params} :params :as req}]
   (let [user (creds/bcrypt-credential-fn users/find-user-by-name params)]
+    (log user)
     (if user
       (merge-auth req user)
       (merge-no-auth req))))
